@@ -1,18 +1,14 @@
 import pytest
 import requests
 
-BASE_URL = "https://jsonplaceholder.typicode.com"
+from clients.jsonplaceholder_client import JSONPlaceholderClient
 
+BASE_URL = "https://jsonplaceholder.typicode.com"
 DEFAULT_TIMEOUT = 10
 
 
 @pytest.fixture(scope="session")
-def base_url():
-    return BASE_URL
-
-
-@pytest.fixture(scope="session")
-def api():
+def api_session():
     s = requests.Session()
     s.headers.update({
         "Accept": "application/json",
@@ -22,5 +18,9 @@ def api():
 
 
 @pytest.fixture(scope="session")
-def timeout():
-    return DEFAULT_TIMEOUT
+def client(api_session):
+    return JSONPlaceholderClient(
+        base_url=BASE_URL,
+        session=api_session,
+        timeout=DEFAULT_TIMEOUT
+    )
