@@ -49,6 +49,12 @@ def test_response_content_type_is_json_for_posts(client):
 
 
 def test_api_does_not_return_5xx_for_basic_requests(client):
-    for path in ["/posts", "/comments", "/albums"]:
-        res = client.get_raw(path)
-        assert res.status_code < 500, f"{path} returned {res.status_code}"
+    checks = [
+        ("posts", client.get_raw("/posts")),
+        ("comments", client.get_raw("/comments")),
+        ("albums", client.list_albums()),
+    ]
+
+    for name, res in checks:
+        assert res.status_code < 500, f"{name} returned {res.status_code}"
+

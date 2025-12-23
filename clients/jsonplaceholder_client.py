@@ -72,4 +72,8 @@ class JSONPlaceholderClient:
         return self._get(path)
 
     def create_post_raw(self, payload: dict) -> ApiResponse:
+        """Allows creating a post with any payload (for negative tests)."""
         return self._post("/posts", payload)
+    
+    def list_albums(self) -> ApiResponse:
+        return self._get("/albums")
